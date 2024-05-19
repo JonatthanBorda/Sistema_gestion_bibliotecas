@@ -15,21 +15,34 @@ namespace API_Biblioteca.Controllers
     public class LibrosController : ControllerBase
     {
         private readonly BookService _bookService;
-        public LibrosController(BookService bookService)
+        private readonly ILogger<AutoresController> _logger;
+        public LibrosController(BookService bookService, ILogger<AutoresController> logger)
         {
             _bookService = bookService;
+            _logger = logger;
         }
 
         //Endpoint para obtener todos los libros:
         [HttpGet]
-        public async Task<IActionResult> GetAllBooks() => Ok(await _bookService.GetAllBooksAsync());
+        public async Task<IActionResult> GetAllBooks()
+        {
+            _logger.LogInformation("Controlador - Obteniendo todos los libros.");
+            return Ok(await _bookService.GetAllBooksAsync());
+        }
+            
 
         //Endpoint para obtener un libro por id:
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBookById(int id)
         {
+            _logger.LogInformation("Controlador - Obteniendo un libro por Id {LibroId}", id);
             var book = await _bookService.GetBookByIdAsync(id);
-            if (book == null) return NotFound();
+            if (book == null)
+            {
+                _logger.LogWarning("Controlador - El libro con Id {LibroId} no fue encontrado.", id);
+                return NotFound();
+            }
+                
             return Ok(book);
         }
 
@@ -37,6 +50,7 @@ namespace API_Biblioteca.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBook([FromBody] Libro book)
         {
+            _logger.LogInformation("Controlador - Agregando un nuevo libro.");
             try
             {
                 await _bookService.AddBookAsync(book);
@@ -45,6 +59,7 @@ namespace API_Biblioteca.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Controlador - Error agregando un libro.");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -53,7 +68,11 @@ namespace API_Biblioteca.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromBody] Libro book)
         {
-            if (id != book.Id) return BadRequest();
+            if (id != book.Id)
+            {
+                _logger.LogWarning("Controlador - El id ingresado no coincide para la actualización del libro con Id {LibroId}", id);
+                return BadRequest();
+            }               
 
             try
             {
@@ -63,6 +82,7 @@ namespace API_Biblioteca.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Controlador - Error actualizando los datos del libro.");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -71,8 +91,14 @@ namespace API_Biblioteca.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
+            _logger.LogInformation("Eliminando libro con Id {LibroId}", id);
             var book = await _bookService.GetBookByIdAsync(id);
-            if (book == null) return NotFound();
+            if (book == null)
+            {
+                _logger.LogWarning("El libro con Id {LibroId} no fue encontrado.", id);
+                return NotFound();
+            }
+
             _bookService.DeleteBook(book);
             await _bookService.CompleteAsync();
             return NoContent();

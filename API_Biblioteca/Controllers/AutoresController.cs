@@ -15,21 +15,34 @@ namespace API_Biblioteca.Controllers
     public class AutoresController : ControllerBase
     {
         private readonly AuthorService _authorService;
-        public AutoresController(AuthorService authorService)
+        private readonly ILogger<AutoresController> _logger;
+
+        public AutoresController(AuthorService authorService, ILogger<AutoresController> logger)
         {
             _authorService = authorService;
+            _logger = logger;
         }
 
         //Endpoint para obtener todos los autores:
         [HttpGet]
-        public async Task<IActionResult> GetAllAuthors() => Ok(await _authorService.GetAllAuthorsAsync());
+        public async Task<IActionResult> GetAllAuthors()
+        {
+            _logger.LogInformation("Controlador - Obteniendo todos los autores.");
+            return Ok(await _authorService.GetAllAuthorsAsync());
+        }
 
         //Endpoint para obtener un autor por id:
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAuthorById(int id)
         {
+            _logger.LogInformation("Controlador - Obteniendo un autor por Id {AutorId}", id);
             var author = await _authorService.GetAuthorByIdAsync(id);
-            if (author == null) return NotFound();
+            if (author == null)
+            {
+                _logger.LogWarning("Controlador - El autor con Id {AutorId} no fue encontrado.", id);
+                return NotFound();
+            }
+                
             return Ok(author);
         }
 
@@ -37,6 +50,7 @@ namespace API_Biblioteca.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAuthor([FromBody] Autor author)
         {
+            _logger.LogInformation("Controlador - Agregando un nuevo autor.");
             try
             {
                 await _authorService.AddAuthorAsync(author);
@@ -45,6 +59,7 @@ namespace API_Biblioteca.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Controlador - Error agregando un autor.");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -53,8 +68,12 @@ namespace API_Biblioteca.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuthor(int id, [FromBody] Autor author)
         {
-            if (id != author.Id) return BadRequest();
-
+            if (id != author.Id)
+            {
+                _logger.LogWarning("Controlador - El id ingresado no coincide para la actualización del autor con Id {AutorId}", id);
+                return BadRequest();
+            }
+                             
             try
             {
                 await _authorService.UpdateAuthor(author);
@@ -63,6 +82,7 @@ namespace API_Biblioteca.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                _logger.LogError(ex, "Controlador - Error actualizando los datos del autor.");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -70,8 +90,14 @@ namespace API_Biblioteca.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
+            _logger.LogInformation("Eliminando autor con Id {AutorId}", id);
             var author = await _authorService.GetAuthorByIdAsync(id);
-            if (author == null) return NotFound();
+            if (author == null)
+            {
+                _logger.LogWarning("El autor con Id {AutorId} no fue encontrado.", id);
+                return NotFound();
+            }
+                
             _authorService.DeleteAuthor(author);
             await _authorService.CompleteAsync();
             return NoContent();
