@@ -1,0 +1,89 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\obj\\Debug\\net8.0\\compressed\\7x9wh8pr1t.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Sistema_Biblioteca_UI.styles.css",
+      "PackagePath": "staticwebassets\\Sistema_Biblioteca_UI.styles.css"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\images\\ico_blazor.jpg",
+      "PackagePath": "staticwebassets\\images\\ico_blazor.jpg"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\images\\ico_bootstrap.png",
+      "PackagePath": "staticwebassets\\images\\ico_bootstrap.png"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\images\\ico_csharp.png",
+      "PackagePath": "staticwebassets\\images\\ico_csharp.png"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\images\\ico_html.png",
+      "PackagePath": "staticwebassets\\images\\ico_html.png"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\images\\ico_net.png",
+      "PackagePath": "staticwebassets\\images\\ico_net.png"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\images\\ico_sql.png",
+      "PackagePath": "staticwebassets\\images\\ico_sql.png"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\images\\ico_visual.png",
+      "PackagePath": "staticwebassets\\images\\ico_visual.png"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "D:\\Documentos\\Gran Titan\\Sistema Gestion Bibliotecas\\Sistema_Biblioteca_UI\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Sistema_Biblioteca_UI.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Sistema_Biblioteca_UI.props",
+      "PackagePath": "build\\Sistema_Biblioteca_UI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Sistema_Biblioteca_UI.props",
+      "PackagePath": "buildMultiTargeting\\Sistema_Biblioteca_UI.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Sistema_Biblioteca_UI.props",
+      "PackagePath": "buildTransitive\\Sistema_Biblioteca_UI.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

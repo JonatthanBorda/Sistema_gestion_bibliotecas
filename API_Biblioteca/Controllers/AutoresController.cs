@@ -46,7 +46,7 @@ namespace API_Biblioteca.Controllers
             return Ok(author);
         }
 
-        //Endpoint para agregar un libro:
+        //Endpoint para agregar un autor:
         [HttpPost]
         public async Task<IActionResult> AddAuthor([FromBody] Autor author)
         {
@@ -55,11 +55,12 @@ namespace API_Biblioteca.Controllers
             {
                 await _authorService.AddAuthorAsync(author);
                 await _authorService.CompleteAsync();
+                _logger.LogInformation("Controlador - Autor agregado OK.");
                 return CreatedAtAction(nameof(GetAuthorById), new { id = author.Id }, author);
             }
             catch (InvalidOperationException ex)
             {
-                _logger.LogError(ex, "Controlador - Error agregando un autor.");
+                _logger.LogError(ex, "Controlador - Error agregando un autor");
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -76,7 +77,7 @@ namespace API_Biblioteca.Controllers
                              
             try
             {
-                await _authorService.UpdateAuthor(author);
+                await _authorService.UpdateAuthorAsync(author);
                 await _authorService.CompleteAsync();
                 return NoContent();
             }
@@ -85,8 +86,14 @@ namespace API_Biblioteca.Controllers
                 _logger.LogError(ex, "Controlador - Error actualizando los datos del autor.");
                 return BadRequest(new { message = ex.Message });
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Controlador - Error actualizando el autor con Id {AutorId}.", id);
+                return StatusCode(500, "Se ha producido un error en el servidor.");
+            }
         }
 
+        //Endpoint para eliminar un autor por id:
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
@@ -98,7 +105,7 @@ namespace API_Biblioteca.Controllers
                 return NotFound();
             }
                 
-            _authorService.DeleteAuthor(author);
+            await _authorService.DeleteAuthorAsync(id);
             await _authorService.CompleteAsync();
             return NoContent();
         }

@@ -8,11 +8,14 @@ namespace API_Biblioteca.DAL.Repositories
         public IRepository<Libro> Books { get; private set; }
         public IRepository<Autor> Authors { get; private set; }
 
+        public IRepository<TipoDocto> DocsType { get; private set; }
+
         public UnitOfWork(DbLibrarySystemContext context)
         {
             _context = context;
             Books = new BookRepository(context);
             Authors = new AuthorRepository(context);
+            DocsType = new DocTypeRepository(context);
         }
 
         public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();

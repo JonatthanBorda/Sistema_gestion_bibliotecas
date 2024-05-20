@@ -42,7 +42,7 @@ public partial class DbLibrarySystemContext : DbContext
 
             entity.HasOne(d => d.IdTipoDoctoNavigation).WithMany(p => p.Autors)
                 .HasForeignKey(d => d.IdTipoDocto)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("FK__Autor__IdTipoDoc__267ABA7A");
         });
 
@@ -60,7 +60,7 @@ public partial class DbLibrarySystemContext : DbContext
 
             entity.HasOne(d => d.IdAutorNavigation).WithMany(p => p.Libros)
                 .HasForeignKey(d => d.IdAutor)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__Libro__IdAutor__29572725");
         });
 

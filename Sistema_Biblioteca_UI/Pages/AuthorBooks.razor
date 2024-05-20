@@ -1,0 +1,89 @@
+﻿@page "/librosAutor/{idAutor:int}"
+
+@using Sistema_Biblioteca_Shared;
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using Sistema_Biblioteca.Services;
+@inject SweetAlertService Swal;
+@inject IAuthorService authorService;
+@inject NavigationManager navigationManager;
+
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12 d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0">Libros de @autor?.Nombre @autor?.Apellido</h3>
+        </div>
+        <div class="col-md-12">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    @if (isLoading)
+                    {
+                        <div class="text-center">
+                            <h5>Cargando datos...</h5>
+                        </div>
+                    }
+                    else if (autor?.Libros == null || !autor.Libros.Any())
+                    {
+                        <div class="text-center">
+                            <h5>No hay libros registrados para este autor.</h5>
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Número de páginas</th>
+                                    <th>Fecha publicación</th>
+                                    <th>Disponible</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var libro in autor.Libros)
+                                {
+                                    <tr>
+                                        <td>@libro.Titulo</td>
+                                        <td>@libro.NumPaginas</td>
+                                        <td>@libro.FechaPublicacion.ToString("dd/MM/yyyy")</td>
+                                        <td>@(libro.Disponible ? "Sí" : "No")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    <a class="btn btn-warning" href="autores">Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int idAutor { get; set; }
+
+    private AutorDTO? autor;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        var (authorData, authorError) = await authorService.GetAuthorById(idAutor);
+
+        if (authorError != null)
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Error",
+                    Text = authorError,
+                    Icon = SweetAlertIcon.Error
+                });
+            navigationManager.NavigateTo("/autores");
+            return;
+        }
+
+        autor = authorData;
+        isLoading = false;
+    }
+}

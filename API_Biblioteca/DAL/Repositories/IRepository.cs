@@ -1,4 +1,6 @@
-﻿namespace API_Biblioteca.DAL.Repositories
+﻿using API_Biblioteca.DAL.Models;
+
+namespace API_Biblioteca.DAL.Repositories
 {
     public interface IRepository<T> where T : class
     {

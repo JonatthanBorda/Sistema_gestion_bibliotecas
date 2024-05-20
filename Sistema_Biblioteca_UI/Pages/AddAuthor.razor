@@ -1,0 +1,162 @@
+﻿@page "/autor"
+@page "/autor/{idAutorEdit:int}"
+
+@using Sistema_Biblioteca_Shared;
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using Sistema_Biblioteca.Services;
+
+@inject SweetAlertService Swal;
+@inject IAuthorService authorService;
+@inject IDocTypeService docsService;
+@inject NavigationManager navegacion;
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0">@titulo</h3>
+        </div>
+        <div class="col-md-10">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    @if (editContext != null)
+                    {
+                        <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+                            <DataAnnotationsValidator />
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nombre</label>
+                                    <InputText class="form-control" @bind-Value="autor.Nombre" />
+                                    <ValidationMessage For="@(() => autor.Nombre)" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Apellidos</label>
+                                    <InputText class="form-control" @bind-Value="autor.Apellido" />
+                                    <ValidationMessage For="@(() => autor.Apellido)" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Tipo de documento</label>
+                                    <InputSelect class="form-control" @bind-Value="autor.IdTipoDocto">
+                                        <option value="0">Selecciona una opción</option>
+                                        @foreach (var tipo in listaTipoDocto)
+                                        {
+                                            <option value="@tipo.Id">@tipo.Tipo</option>
+                                        }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() => autor.IdTipoDocto)" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Número de documento</label>
+                                    <InputNumber class="form-control" @bind-Value="autor.NumDocto" />
+                                    <ValidationMessage For="@(() => autor.NumDocto)" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Fecha de nacimiento</label>
+                                    <InputDate class="form-control" @bind-Value="autor.FechaNacimiento" />
+                                    <ValidationMessage For="@(() => autor.FechaNacimiento)" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Bibliografia</label>
+                                    <InputTextArea class="form-control" @bind-Value="autor.Bibliografia" />
+                                    <ValidationMessage For="@(() => autor.Bibliografia)" />
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" type="submit">
+                                @btnTexto
+                            </button>
+
+                            <a class="btn btn-warning" href="autores">Volver</a>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        <p>Cargando...</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public int idAutorEdit {get; set;} = 0;
+
+    string titulo = string.Empty;
+    string btnTexto = string.Empty;
+
+    AutorDTO autor = new AutorDTO();
+    IEnumerable<TipoDoctoDTO> listaTipoDocto = new List<TipoDoctoDTO>();
+    EditContext? editContext;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (idAutorEdit != 0)
+        {
+            var (data, error) = await authorService.GetAuthorById(idAutorEdit);
+            if (error != null)
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Error",
+                    Text = error,
+                    Icon = SweetAlertIcon.Error
+                });
+                return;
+            }
+            autor = data!;
+            titulo = "Editando los datos del Autor";
+            btnTexto = "Actualizar";
+        }
+        else
+        {
+            titulo = "Creando nuevo Autor";
+            btnTexto = "Guardar";
+        }
+
+        listaTipoDocto = await docsService.GetAllTypes();
+        editContext = new EditContext(autor);
+    }
+
+    private async Task OnValidSubmit()
+    {
+        if (editContext.Validate()) // Validar el modelo usando EditContext
+        {
+            string result = string.Empty;
+            if (idAutorEdit != 0)
+            {
+                result = await authorService.UpdateAuthor(autor);
+            }
+            else
+            {
+                result = await authorService.AddAuthor(autor);  
+            }
+
+            if (string.IsNullOrEmpty(result))
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Excelente!",
+                    Text = "Los datos del autor se han guardado correctamente.",
+                    Icon = SweetAlertIcon.Success
+                });
+                navegacion.NavigateTo("/autores");
+            }
+            else
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Upps!",
+                    Text = result,
+                    Icon = SweetAlertIcon.Error
+                });
+            }
+        }
+    }
+}

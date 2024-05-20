@@ -1,0 +1,71 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = Sistema_Biblioteca_UI
+build_property.RootNamespace = Sistema_Biblioteca_UI
+build_property.ProjectDir = D:\Documentos\Gran Titan\Sistema Gestion Bibliotecas\Sistema_Biblioteca_UI\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = false
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\Documentos\Gran Titan\Sistema Gestion Bibliotecas\Sistema_Biblioteca_UI
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/AddAuthor.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkQXV0aG9yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/AddBook.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkQm9vay5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/AuthorBooks.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9yQm9va3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Authors.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aG9ycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Books.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Weather.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-8xvxg42mvc
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-l0uzjnif07

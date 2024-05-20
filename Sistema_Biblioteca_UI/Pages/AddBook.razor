@@ -1,0 +1,164 @@
+﻿@page "/libro"
+@page "/libro/{idLibroEdit:int}"
+
+@using Sistema_Biblioteca_Shared;
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using Sistema_Biblioteca.Services;
+
+@inject SweetAlertService Swal;
+@inject IBookService bookService;
+@inject IAuthorService authorService;
+@inject NavigationManager navegacion;
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0">@titulo</h3>
+        </div>
+        <div class="col-md-10">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    @if (editContext != null)
+                    {
+                        <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
+                            <DataAnnotationsValidator />
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Titulo</label>
+                                    <InputText class="form-control" @bind-Value="libro.Titulo" />
+                                    <ValidationMessage For="@(() => libro.Titulo)" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Número de páginas</label>
+                                    <InputNumber class="form-control" @bind-Value="libro.NumPaginas" />
+                                    <ValidationMessage For="@(() => libro.NumPaginas)" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Fecha de publicación</label>
+                                    <InputDate class="form-control" @bind-Value="libro.FechaPublicacion" />
+                                    <ValidationMessage For="@(() => libro.FechaPublicacion)" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Autor</label>
+                                    <InputSelect class="form-control" @bind-Value="libro.IdAutor">
+                                        <option value="0">Selecciona una opción</option>
+                                        @foreach (var autor in listaAutores)
+                                        {
+                                            <option value="@autor.Id">@autor.Nombre @autor.Apellido</option>
+                                        }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() => libro.IdAutor)" />
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">¿Este libro está disponible?</label>
+                                    <InputRadioGroup @bind-Value="libro.Disponible">
+                                        <div class="form-check">
+                                            <InputRadio class="form-check-input" Value="true" id="disponible-true" />
+                                            <label class="form-check-label" for="disponible-true">Sí</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <InputRadio class="form-check-input" Value="false" id="disponible-false" />
+                                            <label class="form-check-label" for="disponible-false">No</label>
+                                        </div>
+                                    </InputRadioGroup>
+                                    <ValidationMessage For="@(() => libro.Disponible)" />
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" type="submit">
+                                @btnTexto
+                            </button>
+
+                            <a class="btn btn-warning" href="libros">Volver</a>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        <p>Cargando...</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public int idLibroEdit { get; set; } = 0;
+
+    string titulo = string.Empty;
+    string btnTexto = string.Empty;
+
+    LibroDTO libro = new LibroDTO();
+    IEnumerable<AutorDTO> listaAutores = new List<AutorDTO>();
+    EditContext? editContext;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (idLibroEdit != 0)
+        {
+            var (dataLibro, error) = await bookService.GetBookById(idLibroEdit);
+            if (error != null)
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Error",
+                    Text = error,
+                    Icon = SweetAlertIcon.Error
+                });
+                return;
+            }
+            libro = dataLibro!;
+            titulo = "Editando los datos del Libro";
+            btnTexto = "Actualizar";
+        }
+        else
+        {
+            titulo = "Creando nuevo Libro";
+            btnTexto = "Guardar";
+        }
+
+        var (dataAutor, errorGet) = await authorService.GetAllAuthors();
+        listaAutores = dataAutor!;
+        editContext = new EditContext(libro);
+    }
+
+    private async Task OnValidSubmit()
+    {
+        if (editContext.Validate()) //Validar el modelo usando EditContext
+        {
+            string result = string.Empty;
+            if (idLibroEdit != 0)
+            {
+                result = await bookService.UpdateBook(libro);
+            }
+            else
+            {
+                result = await bookService.AddBook(libro);
+            }
+
+            if (string.IsNullOrEmpty(result))
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Excelente!",
+                    Text = "Los datos del libro se han guardado correctamente.",
+                    Icon = SweetAlertIcon.Success
+                });
+                navegacion.NavigateTo("/libros");
+            }
+            else
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Upps!",
+                    Text = result,
+                    Icon = SweetAlertIcon.Error
+                });
+            }
+        }
+    }
+}

@@ -1,0 +1,153 @@
+﻿@page "/autores"
+
+@using Sistema_Biblioteca_Shared;
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using Sistema_Biblioteca.Services;
+@using static Sistema_Biblioteca_UI.Utilities.Enum
+
+@inject SweetAlertService Swal;
+@inject IAuthorService authorService;
+@inject IJSRuntime jsRuntime;
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12 d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0">Módulo de Autores</h3>
+            <a class="btn btn-outline-success btn-sm" href="autor" title="Agregar autor"><i class="fa-solid fa-user-plus fs-5"></i></a>
+        </div>
+        <div class="col-md-12">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
+                                <th>Tipo documento</th>
+                                <th>Número documento</th>
+                                <th>Fecha de nacimiento</th>
+                                <th>Bibliografia</th>
+                                <th>Libros</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (isLoading)
+                            {
+                                <tr>
+                                    <td colspan="7" align="center">
+                                        <h5>Cargando datos...</h5>
+                                    </td>
+                                </tr>
+                            }
+                            else if (listaAutores == null || !listaAutores.Any())
+                            {
+                                <tr>
+                                    <td colspan="7" align="center">
+                                        <h5>Todavía no hay autores registrados en el sistema.</h5>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var autor in listaAutores)
+                                {
+                                    <tr>
+                                        <td>@autor.Nombre</td>
+                                        <td>@autor.Apellido</td>
+                                        <td>
+                                            @{
+                                                var tipoDoctoName = Enum.GetName(typeof(TipoDocto), autor.IdTipoDocto)?.Replace('_', ' ') ?? "N/A";
+                                            }
+                                            @tipoDoctoName
+                                        </td>
+                                        <td>@autor.NumDocto</td>
+                                        <td>@autor.FechaNacimiento</td>
+                                        <td>@autor.Bibliografia</td>
+                                        <td><a href="librosAutor/@autor.Id" title="Ver libros"><i class="fa-solid fa-book"></i></a></td>
+                                        <td>
+                                            <a class="btn btn-primary btn-sm" title="Editar" href="autor/@autor.Id">
+                                                <i class="fa-solid fa-pen-to-square fs-6"></i>
+                                            </a>
+                                            <button type="button" title="Eliminar" class="btn btn-danger btn-sm ms-2" @onclick="(() => ConfirmDelete(autor.Id))">
+                                                <i class="fa-solid fa-trash fs-6"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    IEnumerable<AutorDTO>? listaAutores = null;
+    bool isLoading = true;
+
+    //Método inicial para mostrar todos los autores:
+    protected override async Task OnInitializedAsync()
+    {
+        var (data, error) = await authorService.GetAllAuthors();
+        if (error != null)
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Error",
+                    Text = error,
+                    Icon = SweetAlertIcon.Error
+                });
+        }
+        else
+        {
+            listaAutores = data ?? new List<AutorDTO>();
+        }
+
+        //Pausar para simular el tiempo de carga
+        await Task.Delay(1000); //Pausa de 1 segundo
+
+        isLoading = false; //Datos cargados, cambiar el estado de carga
+        StateHasChanged(); //Forzar la actualización del componente 
+    }
+
+    private async Task ConfirmDelete(int id)
+    {
+        var resultado = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Eliminar autor",
+                Text = "¿Estás seguro/a de que deseas eliminar este autor?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true
+            });
+
+        if (resultado.IsConfirmed)
+        {
+            var error = await authorService.DeleteAuthor(id);
+            if (string.IsNullOrEmpty(error))
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "¡Excelente!",
+                        Text = "El autor se ha eliminado correctamente.",
+                        Icon = SweetAlertIcon.Success
+                    });
+                var (data, errorGet) = await authorService.GetAllAuthors();
+                listaAutores = data ?? new List<AutorDTO>();
+            }
+            else
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Error",
+                        Text = error,
+                        Icon = SweetAlertIcon.Error
+                    });
+            }
+        }
+    }
+}
+
+

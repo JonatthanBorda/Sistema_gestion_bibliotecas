@@ -6,6 +6,7 @@ namespace API_Biblioteca.DAL.Repositories
     {
         IRepository<Libro> Books { get; }
         IRepository<Autor> Authors { get; }
+        IRepository<TipoDocto> DocsType { get; }
         Task<int> CompleteAsync();
     }
 }

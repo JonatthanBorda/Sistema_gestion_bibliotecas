@@ -21,4 +21,8 @@
     <Folder Include="DAL\Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sistema_Biblioteca_Shared\Sistema_Biblioteca_Shared.csproj" />
+  </ItemGroup>
+
 </Project>

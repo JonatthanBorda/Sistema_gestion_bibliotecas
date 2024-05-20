@@ -1,0 +1,139 @@
+﻿@page "/libros"
+
+@using Sistema_Biblioteca_Shared;
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using Sistema_Biblioteca.Services;
+@inject SweetAlertService Swal;
+@inject IBookService bookService;
+@inject IJSRuntime jsRuntime;
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12 d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0">Módulo de Libros</h3>
+            <a class="btn btn-outline-success btn-sm" href="libro" title="Agregar libro"><i class="fa-solid fa-folder-plus"></i></a>
+        </div>
+        <div class="col-md-12">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Número de páginas</th>
+                                <th>Fecha publicación</th>
+                                <th>Disponible</th>
+                                <th>Autor</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (isLoading)
+                            {
+                                <tr>
+                                    <td colspan="6" align="center">
+                                        <h5>Cargando datos...</h5>
+                                    </td>
+                                </tr>
+                            }
+                            else if (listaLibros == null || !listaLibros.Any())
+                            {
+                                <tr>
+                                    <td colspan="6" align="center">
+                                        <h5>Todavía no hay libros registrados en el sistema.</h5>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var libro in listaLibros)
+                                {
+                                    <tr>
+                                        <td>@libro.Titulo</td>
+                                        <td>@libro.NumPaginas</td>
+                                        <td>@libro.FechaPublicacion.ToString("dd/MM/yyyy")</td>
+                                        <td>@(libro.Disponible ? "Sí" : "No")</td>
+                                        <td>@libro.Autor.Nombre</td>
+                                        <td>
+                                            <a class="btn btn-primary btn-sm" title="Editar" href="libro/@libro.Id">
+                                                <i class="fa-solid fa-pen-to-square fs-6"></i>
+                                            </a>
+                                            <button type="button" title="Eliminar" class="btn btn-danger btn-sm ms-2" @onclick="(() => ConfirmDelete(libro.Id))">
+                                                <i class="fa-solid fa-trash fs-6"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    IEnumerable<LibroDTO>? listaLibros = null;
+    bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var (data, error) = await bookService.GetAllBooks();
+        if (error != null)
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Error",
+                    Text = error,
+                    Icon = SweetAlertIcon.Error
+                });
+        }
+        else
+        {
+            listaLibros = data ?? new List<LibroDTO>();
+        }
+
+        //Pausar para simular el tiempo de carga:
+        await Task.Delay(1000); //Pausa de 1 segundo
+
+        isLoading = false; //Datos cargados, cambiar el estado de carga
+        StateHasChanged(); //Forzar la actualización del componente
+    }
+
+    private async Task ConfirmDelete(int id)
+    {
+        var resultado = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Eliminar libro",
+                Text = "¿Estás seguro/a de que deseas eliminar este libro?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true
+            });
+
+        if (resultado.IsConfirmed)
+        {
+            var error = await bookService.DeleteBook(id);
+            if (string.IsNullOrEmpty(error))
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "¡Excelente!",
+                        Text = "El libro se ha eliminado correctamente.",
+                        Icon = SweetAlertIcon.Success
+                    });
+                var (data, errorGet) = await bookService.GetAllBooks();
+                listaLibros = data ?? new List<LibroDTO>();
+            }
+            else
+            {
+                await Swal.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Error",
+                        Text = error,
+                        Icon = SweetAlertIcon.Error
+                    });
+            }
+        }
+    }
+}
