@@ -1,5 +1,6 @@
 ﻿@page "/autores"
 
+@using Microsoft.AspNetCore.Authorization
 @using Sistema_Biblioteca_Shared;
 @using CurrieTechnologies.Razor.SweetAlert2;
 @using Sistema_Biblioteca.Services;
@@ -26,7 +27,7 @@
                                 <th>Tipo documento</th>
                                 <th>Número documento</th>
                                 <th>Fecha de nacimiento</th>
-                                <th>Bibliografia</th>
+                                <th>Biografia</th>
                                 <th>Libros</th>
                                 <th>Acciones</th>
                             </tr>
@@ -141,7 +142,7 @@
             {
                 await Swal.FireAsync(new SweetAlertOptions
                     {
-                        Title = "Error",
+                        Title = "¡Upss!",
                         Text = error,
                         Icon = SweetAlertIcon.Error
                     });

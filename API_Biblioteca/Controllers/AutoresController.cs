@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_Biblioteca.DAL.Models;
 using API_Biblioteca.BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API_Biblioteca.Controllers
 {
@@ -47,6 +48,7 @@ namespace API_Biblioteca.Controllers
         }
 
         //Endpoint para agregar un autor:
+        [Authorize(Policy = "AdminPolicy")] //Funcionalidad solo para rol Admin
         [HttpPost]
         public async Task<IActionResult> AddAuthor([FromBody] Autor author)
         {
@@ -66,6 +68,7 @@ namespace API_Biblioteca.Controllers
         }
 
         //Endpoint para modificar un autor por id:
+        [Authorize(Policy = "AdminPolicy")] //Funcionalidad solo para rol Admin
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuthor(int id, [FromBody] Autor author)
         {
@@ -94,6 +97,7 @@ namespace API_Biblioteca.Controllers
         }
 
         //Endpoint para eliminar un autor por id:
+        [Authorize(Policy = "AdminPolicy")] //Funcionalidad solo para rol Admin
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {

@@ -46,16 +46,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Weather.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Documentos/Gran Titan/Sistema Gestion Bibliotecas/Sistema_Biblioteca_UI/_Imports.razor]

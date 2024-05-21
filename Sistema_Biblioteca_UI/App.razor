@@ -1,12 +1,24 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    <PageTitle>Acceso Denegado</PageTitle>
+                    <h1>Acceso Denegado</h1>
+                    <p>No tienes permiso para ver esta página.</p>
+                </NotAuthorized>
+                <Authorizing>
+                    <PageTitle>Autorizando</PageTitle>
+                    <h1>Autorizando...</h1>
+                </Authorizing>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>No Encontrado</PageTitle>
+            <p role="alert">Lo sentimos, no hay nada en esta dirección.</p>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>

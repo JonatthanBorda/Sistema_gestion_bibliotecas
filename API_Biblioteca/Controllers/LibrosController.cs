@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using API_Biblioteca.DAL.Models;
 using API_Biblioteca.BLL.Services;
 using Sistema_Biblioteca_Shared;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API_Biblioteca.Controllers
 {
@@ -48,6 +49,7 @@ namespace API_Biblioteca.Controllers
         }
 
         //Endpoint para agregar un libro:
+        [Authorize(Policy = "AdminPolicy")] //Funcionalidad solo para rol Admin
         [HttpPost]
         public async Task<IActionResult> AddBook([FromBody] LibroDTO book)
         {
@@ -66,6 +68,7 @@ namespace API_Biblioteca.Controllers
         }
 
         //Endpoint para modificar un libro por id:
+        [Authorize(Policy = "AdminPolicy")] //Funcionalidad solo para rol Admin
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, [FromBody] LibroDTO book)
         {
@@ -94,6 +97,7 @@ namespace API_Biblioteca.Controllers
         }
 
         //Endpoint para eliminar un libro por id:
+        [Authorize(Policy = "AdminPolicy")] //Funcionalidad solo para rol Admin
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {

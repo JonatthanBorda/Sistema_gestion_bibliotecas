@@ -1,6 +1,8 @@
 ﻿@page "/libro"
 @page "/libro/{idLibroEdit:int}"
+@attribute [Authorize(Roles = "Admin")]
 
+@using Microsoft.AspNetCore.Authorization
 @using Sistema_Biblioteca_Shared;
 @using CurrieTechnologies.Razor.SweetAlert2;
 @using Sistema_Biblioteca.Services;

@@ -65,6 +65,10 @@ namespace Sistema_Biblioteca.Services
                 {
                     return null!;
                 }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return $"Acceso denegado. No tienes permisos para realizar esta acción.";
+                }
                 else
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -86,6 +90,10 @@ namespace Sistema_Biblioteca.Services
                 {
                     return null!;
                 }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return $"Acceso denegado. No tienes permisos para realizar esta acción.";
+                }
                 else
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -106,6 +114,10 @@ namespace Sistema_Biblioteca.Services
                 if (response.IsSuccessStatusCode)
                 {
                     return null!;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return $"Acceso denegado. No tienes permisos para realizar esta acción.";
                 }
                 else
                 {

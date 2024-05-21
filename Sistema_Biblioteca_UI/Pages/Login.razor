@@ -1,0 +1,78 @@
+﻿@page "/login"
+
+@using Sistema_Biblioteca.Services
+@using System.ComponentModel.DataAnnotations
+
+@inject ILoginService LoginService
+@inject NavigationManager Navigation
+@inject SweetAlertService Swal
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Iniciar sesión</h3>
+                    <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+                        <DataAnnotationsValidator />
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Usuario:</label>
+                            <InputText id="username" class="form-control" @bind-Value="loginModel.Username" />
+                            <ValidationMessage For="@(() => loginModel.Username)" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña:</label>
+                            <InputText id="password" type="password" class="form-control" @bind-Value="loginModel.Password" />
+                            <ValidationMessage For="@(() => loginModel.Password)" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">¿Aún no estás registrado?</h3>
+                    <p class="text-justify">Si te apasionan los libros, este será tu lugar favorito.</p>
+                    <div class="mt-2 text-center">
+                        <a class="btn btn-outline-primary" href="register">Registrarse</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    private async Task HandleLogin()
+    {
+        var error = await LoginService.Login(loginModel);
+
+        if (string.IsNullOrEmpty(error))
+        {
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Upps!",
+                    Text = error,
+                    Icon = SweetAlertIcon.Error
+                });
+        }
+    }
+
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "El usuario es obligatorio.")]
+        public string Username { get; set; }
+
+        [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        public string Password { get; set; }
+    }
+}
